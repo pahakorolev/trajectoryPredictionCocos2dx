@@ -38,11 +38,11 @@ Open your `proj.win32` `.SLN` file and add `Box2D` dependency
 
 Right click on Solution not project name then click on `add`, `add exist project`, search on external resources the `BOX2D` project and add it
 
-Now right click on the solution, click property and flag the `box2d` to compile.
+Now right click on the solution, click property, select `Project Dependencies` and flag the `libBox2D` to compile.
 
-Now right click on your project (inside the solution), and select `reference`, on the bottom click `ADD REFERENCE` then flag `BOX2D`, and click `OK`.
+Now right click on your project (inside the solution), and select `reference`, on the bottom, click `ADD NEW REFERENCE` then flag `libBox2D`, and click `OK`.
 
-Click again, `APPLY` and `OK` to close the windows
+Click `OK` to close the windows
 
 
 ### IT'S TIME TO CODE:
