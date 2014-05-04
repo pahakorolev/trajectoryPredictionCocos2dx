@@ -1,6 +1,6 @@
 ### Predict Trajectory with Cocos2dx 3 and Box2d
 
-How to predict a trajectory with cocos2d-x
+How to predict a trajectory with cocos2d-x and Box2d
 
 Create new cocos2d-x project with:
 
@@ -13,7 +13,7 @@ for more details check that page:
 <b>NOTE: When you create a project with cocos-console, it make in your project dir, the folder `cocos2d`, i don't have upload it because the size in MB it's to big</b>
 
 ### Linux Version<br/>
-open your project folder and in file `CMakeLists.txt` add on line 161 ( on target link libraries ) the box2d
+open your project folder and in the file `CMakeLists.txt` add on line 161 ( on target link libraries ) the box2d
 
 	box2d
 
@@ -34,22 +34,24 @@ the result looks like that:
 
 ### Windows Version
 
-Open your `proj.win32` `.SLN` file and add `Box2D` dependency
+Open your `proj.win32` `.SLN` file and Thend `Box2D` dependency
 
-Right click on Solution not project name than click on add, add exist project, search on external resources the `BOX2D` project and add it
+Right click on Solution not project name then click on add, add exist project, search on external resources the `BOX2D` project and add it
 
 Now right click on the solution, click property and flag the box2d to compile.
 
-Now right click on your project (inside the solution), and select reference, on the bottom click ADD REFERENCE than flag BOX2D, and click OK.
+Now right click on your project (inside the solution), and select reference, on the bottom click ADD REFERENCE then flag BOX2D, and click OK.
 
 Click again, APPLY and OK to close the windows
 
 
 ### IT'S TIME TO CODE:
 
-Add `USING_NS_CC;` under `#include "cocos2d.h"` on line 4	
+In `HelloWorldScene.h` file, on line 4 under `#include "cocos2d.h"` add:
 
-On `HelloWorldScene.h` file add under public:
+    USING_NS_CC; 
+
+and under public add:
 
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchMoved(Touch* touch, Event* event);
@@ -125,15 +127,15 @@ Include in the header file the box2d library:
 	
      #include <Box2D/Box2D.h>
 	
-Add in:
+Add the b2ContactListener changing:
 
 	class HelloWorld : public cocos2d::Layer
 
-the b2ContactListener:
+to:
 
 	class HelloWorld : public cocos2d::Layer, public b2ContactListener
 
-than add :
+then add :
 
     b2World *world;
     float deltaTime;
@@ -143,13 +145,13 @@ Add in the `INIT` function the following line of code:
     b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
     world = new b2World(gravity);    
 
-The gravity -10.0f ( in the second parameters ) indicate the gravity in negative y.
+Where the -10.0f indicate the gravity on the y axis.
 
-Now, we need to add a `PTM_RATIO`, than define it at the top of the source with:
+Now, we need to add a `PTM_RATIO`. then define it at the top of the source with:
 	 
     #define PTM_RATIO 32.0
 	
-`PTM_RATIO` indicate the value to convert pixel in meter, because BOX2D work with METERS ( ?? )
+`PTM_RATIO` indicate the value to convert pixel in meter, because BOX2D work with METERS.
 
 In main source code (`HelloWorldScene.cpp`) add:
 
@@ -260,7 +262,7 @@ and in the `INIT` main function add:
 
 ### ADD CONTROL
 
-Remove the `HelloWorld::defineBall();` calling previously added in `INIT` method
+Remove the `HelloWorld::defineBall();` calling previously in `INIT` method
 
 Now inside the method `onTouchBegan` add:
 
@@ -314,11 +316,11 @@ And in the main cpp source add:
 
 	    world->DestroyBody(ballBody);
 	}
+	
+If you try the code, now we have a ball, in the "center" of the screen, and if you try drag the mouse, make a trajectory starting from ball.
 		
 ### LAUNCH THE BALL
 	
-If you try the code, now we have a ball, in the "center" of the screen, and if you try drag the mouse, make a trajectory starting from ball.
-
 Now we need to add an `onTouchEnded`, go to the method and add:
 
     existBall = true;
@@ -346,7 +348,7 @@ set the power when create the ball adding:
 
 	powerMultiplier = 10;
 
-Than change the line:C
+then change the line:
 
     HelloWorld::simulateTrajectory(b2Vec2((dragDistanceX )/PTM_RATIO,(dragDistanceY )/PTM_RATIO));
 
@@ -362,5 +364,3 @@ To:
 	
     ballBody->SetLinearVelocity(b2Vec2((dragDistanceX * powerMultiplier)/PTM_RATIO,(dragDistanceY * powerMultiplier)/PTM_RATIO));
 		
-		
-
