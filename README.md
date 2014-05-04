@@ -319,7 +319,7 @@ And in the main cpp source add:
 	
 If you try the code, now we have a ball, in the "center" of the screen, and if you try drag the mouse, make a trajectory starting from ball.
 		
-### LAUNCH THE BALL
+### THROW THE BALL
 	
 Now we need to add an `onTouchEnded`, go to the method and add:
 
