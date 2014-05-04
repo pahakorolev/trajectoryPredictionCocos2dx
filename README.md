@@ -1,4 +1,4 @@
-Trajectory Ball
+### Predict Trajectory with Cocos2dx 3 and Box2d
 
 How to predict a trajectory with cocos2d-x
 
@@ -9,9 +9,11 @@ Create new cocos2d-x project with:
 for more details check that page:
 
 	http://cocos2d-x.org/wiki/How_to_Start_A_New_Cocos2D-X_Game
+	
+<b>NOTE: When you create a project with cocos-console, it make in your project dir, the folder `cocos2d`, i don't have upload it because the size in MB it's to big</b>
 
-<b>Linux Version:</b><br/>
-open your project folder and in file CMakeLists.txt add on line 161 ( on target link libraries ) the box2d
+### Linux Version<br/>
+open your project folder and in file `CMakeLists.txt` add on line 161 ( on target link libraries ) the box2d
 
 	box2d
 
@@ -30,11 +32,11 @@ the result looks like that:
 		  box2d
 	  )
 
-<b>Windows Version</b>
+### Windows Version
 
-Open your proj.win32 .SLN file and add Box2D dependency
+Open your `proj.win32` `.SLN` file and add `Box2D` dependency
 
-Right click on Solutionm not project name than click on add, add exist project, search on external resources the BOX2D project and add it
+Right click on Solution not project name than click on add, add exist project, search on external resources the `BOX2D` project and add it
 
 Now right click on the solution, click property and flag the box2d to compile.
 
@@ -43,18 +45,17 @@ Now right click on your project (inside the solution), and select reference, on 
 Click again, APPLY and OK to close the windows
 
 
+### IT'S TIME TO CODE:
 
-IT'S TIME TO CODE:
+Add `USING_NS_CC;` under `#include "cocos2d.h"` on line 4	
 
-Add USING_NS_CC; under #include "cocos2d.h" on line 4	
-
-On HelloWorldScene.h file add under public:
+On `HelloWorldScene.h` file add under public:
 
     bool onTouchBegan(Touch* touch, Event* event);
     void onTouchMoved(Touch* touch, Event* event);
     void onTouchEnded(Touch* touch, Event* event);
 
-On the INIT main function add mouse event listener (example: HelloWorldScene.cpp )
+On the `INIT` main function add mouse event listener (example: `HelloWorldScene.cpp` )
 
     //SET MOUSE LISTENER
     auto listener = EventListenerTouchOneByOne::create();
@@ -68,7 +69,7 @@ On the INIT main function add mouse event listener (example: HelloWorldScene.cpp
     //END MOUSE LISTENER
 
 
-In the main CPP file (HelloWorldScene.cpp) add the following function;	
+In the main CPP file (`HelloWorldScene.cpp`) add the following function;	
 
 
 	bool HelloWorld::onTouchBegan(Touch* touch, Event* event)
@@ -88,7 +89,7 @@ In the main CPP file (HelloWorldScene.cpp) add the following function;
 	
 	} 
 
-Inside INIT function add:
+Inside `INIT` function add:
 
     //CREATE A BALL
     dragOffsetStartX = 0;    
@@ -102,7 +103,7 @@ Inside INIT function add:
     ball->setPosition(CCPoint(ballX,ballY));
     this->addChild(ball); 
 
-in the header (HelloWorldScene.h) file add:
+in the header (`HelloWorldScene.h`) file add:
 	
     Sprite *ball;
     bool existBall;
@@ -118,7 +119,7 @@ in the header (HelloWorldScene.h) file add:
     void defineBall();
 
 
-ADD A PHYSICS	
+### ADD A PHYSICS	
 	
 Include in the header file the box2d library:
 	
@@ -137,20 +138,20 @@ than add :
     b2World *world;
     float deltaTime;
 
-Add in the INIT function the following line of code:
+Add in the `INIT` function the following line of code:
 
     b2Vec2 gravity = b2Vec2(0.0f, -10.0f);
     world = new b2World(gravity);    
 
 The gravity -10.0f ( in the second parameters ) indicate the gravity in negative y.
 
-Now, we need to add a PTM_RATIO, than define it at the top of the source with:
+Now, we need to add a `PTM_RATIO`, than define it at the top of the source with:
 	 
     #define PTM_RATIO 32.0
 	
-PTM_RATIO indicate the value to convert pixel in meter, because BOX2D work with METERS ( ?? )
+`PTM_RATIO` indicate the value to convert pixel in meter, because BOX2D work with METERS ( ?? )
 
-In main source code (HelloWorldScene.cpp) add:
+In main source code (`HelloWorldScene.cpp`) add:
 
 	void HelloWorld::defineBall(){
 	    ballShape.m_radius = 45 / PTM_RATIO;
@@ -170,7 +171,7 @@ In main source code (HelloWorldScene.cpp) add:
 	    ballBody->SetGravityScale(10);
 	}
 
-Call the function just after create a ball sprite, under the this->addChild(ball);
+Call the function just after create a ball sprite, under the `this->addChild(ball);`
 
     HelloWorld::defineBall();
 
@@ -204,7 +205,7 @@ And in main cpp source add:
 	    world->DrawDebugData();        
 	}  	
 
-Call the scheduleUpdate in the init function with:
+Call the `scheduleUpdate` in the init function with:
 
 	scheduleUpdate();
 
@@ -237,31 +238,31 @@ in the main cpp file add:
 
 	}		
 
-and in the INIT main function add:
+and in the `INIT` main function add:
 
     addWall(visibleSize.width ,10,(visibleSize.width / 2) ,0); //CEIL
     addWall(10 ,visibleSize.height ,0,(visibleSize.height / 2) ); //LEFT
     addWall(10 ,visibleSize.height ,visibleSize.width,(visibleSize.height / 2) ); //RIGHT
 
 
-ADD POINT FOR TRAJECTORY
+### ADD POINT FOR TRAJECTORY
 
 in the header file add:
 
     Sprite *points[31];
 
-and in the INIT main function add:
+and in the `INIT` main function add:
 
     for (int i = 1 ; i <= 31; i++){
 	points[i] =CCSprite::create("dot.png");
 	this->addChild(points[i]); 
     }
 
-ADD CONTROL
+### ADD CONTROL
 
-Remove the HelloWorld::defineBall(); calling previously added in INIT method
+Remove the `HelloWorld::defineBall();` calling previously added in `INIT` method
 
-Now inside the method onTouchBegan add:
+Now inside the method `onTouchBegan` add:
 
     dragOffsetStartX = touch->getLocation().x;
     dragOffsetStartY = touch->getLocation().y;
@@ -278,7 +279,7 @@ Now inside the method onTouchBegan add:
 
     ball->setPosition(ccp(ballX ,ballY));
 
-Inside the method onTouchMoved add:
+Inside the method `onTouchMoved` add:
 
     CCPoint touchLocation = touch->getLocation();
 
@@ -290,7 +291,7 @@ Inside the method onTouchMoved add:
 
     HelloWorld::simulateTrajectory(b2Vec2((dragDistanceX )/PTM_RATIO,(dragDistanceY )/PTM_RATIO));
 
-Now we need to create the function simulateTrajectory function
+Now we need to create the function `simulateTrajectory` function
 
 Add in the header file:
 
@@ -314,11 +315,11 @@ And in the main cpp source add:
 	    world->DestroyBody(ballBody);
 	}
 		
-LAUNCH THE BALL
+### LAUNCH THE BALL
 	
 If you try the code, now we have a ball, in the "center" of the screen, and if you try drag the mouse, make a trajectory starting from ball.
 
-Now we need to add an onTouchEnded, go to the method and add:
+Now we need to add an `onTouchEnded`, go to the method and add:
 
     existBall = true;
 
@@ -335,7 +336,7 @@ Now we need to add an onTouchEnded, go to the method and add:
     ballBody->SetLinearVelocity(b2Vec2((dragDistanceX)/PTM_RATIO,(dragDistanceY)/PTM_RATIO));	
 
 
-ADD SIMPLE POWER
+### ADD SIMPLE POWER
 	
 For add power at shooting just add a coefficient multiplier, add it on the header file:
 
@@ -345,7 +346,7 @@ set the power when create the ball adding:
 
 	powerMultiplier = 10;
 
-Than change the line:
+Than change the line:C
 
     HelloWorld::simulateTrajectory(b2Vec2((dragDistanceX )/PTM_RATIO,(dragDistanceY )/PTM_RATIO));
 
